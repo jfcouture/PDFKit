@@ -38,7 +38,13 @@ class PDFKit
     def translate_paths(body, env)
       # Host with protocol
       root = "#{env['rack.url_scheme']}://#{env['HTTP_HOST']}/"
-
+      
+      # bug in production where the body is a Array
+      
+      if body.is_a?(Array)
+        body = body.join
+      end
+      
       body.gsub(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/, '\1=\2' + root + '\3\2')
     end
 
